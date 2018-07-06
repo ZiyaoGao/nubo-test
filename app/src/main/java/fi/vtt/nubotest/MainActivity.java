@@ -37,13 +37,13 @@ import android.widget.Toast;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,8 +64,12 @@ public class MainActivity extends Activity implements RoomListener {
     private EditText mTextMessageET;
     private TextView mUsernameTV, mTextMessageTV;
     private String wsUri;
-    public static Map<String, Boolean> userPublishList = new HashMap<>();
+    public static HashMap<String, Boolean> userPublishList = new HashMap<>();
+//    public static SerializableHashMap userPublishList = new SerializableHashMap()
+//    public static SerializableHashMap userhavejoinedRoomBefore = new SerializableHashMap();
+
     Handler mHandler;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,9 +77,9 @@ public class MainActivity extends Activity implements RoomListener {
         Context context = getApplicationContext();
 
         setContentView(R.layout.activity_main);
-        this.mUsernameTV = (TextView) findViewById(R.id.main_username);
-        this.mTextMessageTV = (TextView) findViewById(R.id.message_textview);
-        this.mTextMessageET = (EditText) findViewById(R.id.main_text_message);
+        this.mUsernameTV = findViewById(R.id.main_username);
+        this.mTextMessageTV = findViewById(R.id.message_textview);
+        this.mTextMessageET = findViewById(R.id.main_text_message);
         this.mTextMessageTV.setText("");
         executor = new LooperExecutor();
         executor.requestStart();
@@ -200,7 +204,12 @@ public class MainActivity extends Activity implements RoomListener {
      * @param view button that is clicked to trigger toVideo
      */
     public void makeCall(View view){
-        Intent intent = new Intent(MainActivity.this, PeerVideoActivity.class);
+        Intent intent = new Intent(MainActivity.this, PeerVideoActivity1.class);
+        SerializableHashMap map = new SerializableHashMap();
+        map.setMap(userPublishList);
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("object", map);
+        intent.putExtras(bundle);
         intent.putExtra(Constants.USER_NAME, username);
         startActivity(intent);
     }
@@ -242,7 +251,10 @@ public class MainActivity extends Activity implements RoomListener {
     public void onRoomResponse(RoomResponse response) {
         // joinRoom response
         if (response.getMethod()==KurentoRoomAPI.Method.JOIN_ROOM) {
+            Log.i(TAG,"Successfully connected to the room");
             userPublishList = new HashMap<>(response.getUsers());
+
+            Log.i(TAG,userPublishList.toString());
         }
     }
 
@@ -262,7 +274,16 @@ public class MainActivity extends Activity implements RoomListener {
         // Somebody wrote a message to other users in the room
         if(notification.getMethod().equals(RoomListener.METHOD_SEND_MESSAGE)) {
             final String user = map.get("user").toString();
+            Log.i(TAG,"11111111"+user);
             final String message = map.get("message").toString();
+
+            /*if(user.equals(username))
+                Log.i(TAG,"sendmsgbyself");
+            else {
+                Log.i(TAG,"12345");
+                userhavejoinedRoomBefore.getMap().put(user, true);
+                Log.i(TAG,"67890");
+            }*/
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -295,8 +316,13 @@ public class MainActivity extends Activity implements RoomListener {
                     mTextMessageTV.setText(getString(R.string.participant_joined, user));
                     mHandler.removeCallbacks(clearMessageView);
                     mHandler.postDelayed(clearMessageView, 3000);
+
                 }
             });
+            //everyone send message to new participant
+            /*if(kurentoRoomAPI.isWebSocketConnected()){
+                kurentoRoomAPI.sendMessage(this.roomname,this.username,"Ijoidedtheroom",Constants.id++);
+            }*/
         }
 
         // Somebody in the room published their video
@@ -311,6 +337,7 @@ public class MainActivity extends Activity implements RoomListener {
     @Override
     public void onRoomConnected() {
         if (kurentoRoomAPI.isWebSocketConnected()) {
+            Log.i(TAG,"kurentoRoomAPI.isWebSocketConnected");
             joinRoom();
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override

@@ -81,9 +81,9 @@ public class PeerVideoActivity extends Activity implements NBMWebRTCPeer.Observe
         setContentView(R.layout.activity_video_chat);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         mHandler = new Handler();
-        masterView = (SurfaceViewRenderer) findViewById(R.id.gl_surface);
-        localView = (SurfaceViewRenderer) findViewById(R.id.gl_surface_local);
-        this.mCallStatus   = (TextView) findViewById(R.id.call_status);
+        masterView = findViewById(R.id.gl_surface);
+        localView = findViewById(R.id.gl_surface_local);
+        this.mCallStatus   = findViewById(R.id.call_status);
         callState = CallState.IDLE;
         MainActivity.getKurentoRoomAPIInstance().addObserver(this);
     }

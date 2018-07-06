@@ -68,16 +68,16 @@ public class CustomDialog {
         dialog.setContentView(R.layout.dialog_custom);
         dialog.setCancelable(false);
 
-        dialog_title = (TextView)dialog.findViewById(R.id.textView_dialog_title);
-        dialog_message = (TextView)dialog.findViewById(R.id.textView_dialog_message);
-        numberPicker = (NumberPicker)dialog.findViewById(R.id.numberPicker);
-        button_dialog_ok=(Button)dialog.findViewById(R.id.button_dialog_ok);
-        button_dialog_cancel=(Button)dialog.findViewById(R.id.button_dialog_cancel);
-        dialogProgressBar = (ProgressBar)dialog.findViewById(R.id.progressBar);
+        dialog_title = dialog.findViewById(R.id.textView_dialog_title);
+        dialog_message = dialog.findViewById(R.id.textView_dialog_message);
+        numberPicker = dialog.findViewById(R.id.numberPicker);
+        button_dialog_ok= dialog.findViewById(R.id.button_dialog_ok);
+        button_dialog_cancel= dialog.findViewById(R.id.button_dialog_cancel);
+        dialogProgressBar = dialog.findViewById(R.id.progressBar);
 
-        editText1 = (EditText)dialog.findViewById(R.id.editText1);
-        editText2 = (EditText)dialog.findViewById(R.id.editText2);
-        editText3 = (EditText)dialog.findViewById(R.id.editText3);
+        editText1 = dialog.findViewById(R.id.editText1);
+        editText2 = dialog.findViewById(R.id.editText2);
+        editText3 = dialog.findViewById(R.id.editText3);
 
 
         if(message.length()==0 || message==null)

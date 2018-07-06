@@ -46,12 +46,12 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         context = this;
         this.mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        mUsername = (EditText) findViewById(R.id.username);
-        mRoomname = (EditText) findViewById(R.id.roomname);
+        mUsername = findViewById(R.id.username);
+        mRoomname = findViewById(R.id.roomname);
     }
 
     @Override
@@ -87,13 +87,13 @@ public class LoginActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.i(TAG, "onStop");
-    };
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy");
-    };
+    }
 
     /**
      * Takes the username from the EditText, check its validity and saves it if valid.

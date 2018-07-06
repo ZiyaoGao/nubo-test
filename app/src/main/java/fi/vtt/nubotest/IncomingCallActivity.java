@@ -67,7 +67,7 @@ public class IncomingCallActivity extends Activity {
         Log.wtf(TAG, "username: "+username);
         Log.wtf(TAG, "callUser: "+callUser);
 
-        this.mCallerID = (TextView) findViewById(R.id.caller_id);
+        this.mCallerID = findViewById(R.id.caller_id);
         this.mCallerID.setText(this.callUser);
 
         //this.mPubNub  = new Pubnub(Constants.PUB_KEY, Constants.SUB_KEY);
@@ -131,10 +131,11 @@ public class IncomingCallActivity extends Activity {
             this.mPubNub.unsubscribeAll();
         }
         */
-    };
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy");
-    };
+    }
 }
